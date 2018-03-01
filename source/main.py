@@ -72,6 +72,7 @@ def build_simulation(fn):
 
 def main():
     sim = build_simulation(sys.argv[1])
+    sim.sortRides()
 
 
 if __name__ == "__main__":
