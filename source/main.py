@@ -27,6 +27,7 @@ class Simulation:
             if vehicle.location == vehicle.destination:
                 # get new ride for vehicle
                 ride = get_ride.get_ride(vehicle, self.rides, self.current_time)
+                vehicle.add_ride(ride)
                 self.rides.remove(ride)
 
             # update state
@@ -54,6 +55,10 @@ class Vehicle:
     def __init__(self, location = (0, 0)):
         self.location = location
         self.destination = location
+        self.rides = []
+
+    def add_ride(ride):
+        self.rides.append(ride)
 
 
 def build_simulation(fn):
