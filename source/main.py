@@ -12,7 +12,6 @@ class Simulation:
         self.vehicles = [Vehicle() for i in range(num_vehicles)]
         self.rides = []
 
-
     def addRide(self, ride):
         self.rides.append(ride)
 
@@ -22,22 +21,24 @@ class Simulation:
 
 
     def run(self):
-        for vehicle in self.vehicles:
-            if vehicle.location == vehicle.destination:
-                # get new ride for vehicle
-                pass
-            
-            # update state
-            if vehicle.location[0] < vehicle.destination[0]:
-                vehicle.location[0] += 1
-            elif vehicle.location[0] > vehicle.destination[0]:
-                vehicle.location[0] -= 1
-            elif vehicle.location[1] < vehicle.destination[1]:
-                vehicle.location[1] += 1
-            elif vehicle.location[1] > vehicle.destination[1]:
-                vehicle.location[1] -= 1
-            else:
-                pass # don't move, you're at your destination still and you didn't get a new ride.
+        for current_time in self.steps:
+            for vehicle in self.vehicles:
+                if vehicle.location == vehicle.destination:
+                    # get new ride for vehicle
+                    pass
+                
+                # update state
+                if vehicle.location[0] < vehicle.destination[0]:
+                    vehicle.location[0] += 1
+                elif vehicle.location[0] > vehicle.destination[0]:
+                    vehicle.location[0] -= 1
+                elif vehicle.location[1] < vehicle.destination[1]:
+                    vehicle.location[1] += 1
+                elif vehicle.location[1] > vehicle.destination[1]:
+                    vehicle.location[1] -= 1
+                else:
+                    pass # don't move, you're at your destination still and you didn't get a new ride.
+
             
 
 class Ride:
