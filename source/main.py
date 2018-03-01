@@ -43,7 +43,8 @@ class Simulation:
                     
 
 class Ride:
-    def __init__(self, start_loc, end_loc, start_earliest, finish_latest):
+    def __init__(self, id,start_loc, end_loc, start_earliest, finish_latest):
+        self.id = id
         self.start_loc = start_loc
         self.end_loc = end_loc
         self.start_earliest = start_earliest
@@ -58,14 +59,13 @@ class Vehicle:
 
 def build_simulation(fn):
     f = open(fn, "r")
-
     lines = f.read().splitlines()
 
     simdata = lines[0].split(" ")
     simulation = Simulation(int(simdata[0]), int(simdata[1]), int(simdata[2]), int(simdata[3]), int(simdata[4]), int(simdata[5]))
-    for line in lines[1:]:
+    for ride_index, line in enumerate(lines[1:]):
         lineitems = line.split(" ")
-        simulation.addRide(Ride((int(lineitems[0]), int(lineitems[1])), (int(lineitems[2]), int(lineitems[3])), int(lineitems[4]), int(lineitems[5])))
+        simulation.addRide(Ride(ride_index, (int(lineitems[0]), int(lineitems[1])), (int(lineitems[2]), int(lineitems[3])), int(lineitems[4]), int(lineitems[5])))
 
     f.close()
 
