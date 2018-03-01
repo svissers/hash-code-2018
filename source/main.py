@@ -22,13 +22,16 @@ class Simulation:
 
 
     def run(self):
-        for current_time in self.steps:
+        for current_time in range(self.steps):
             for vehicle in self.vehicles:
                 if vehicle.location == vehicle.destination:
                     # get new ride for vehicle
-                    ride = get_ride.get_ride(vehicle, self.rides, self.current_time)
-                    vehicle.add_ride(ride.id)
-                    self.rides.remove(ride)
+                    if self.rides == []:
+                        pass
+                    else:
+                        ride = get_ride.get_ride(vehicle, self.rides, current_time)
+                        vehicle.add_ride(ride.id)
+                        self.rides.remove(ride)
 
                 # update state
                 if vehicle.location[0] < vehicle.destination[0]:
@@ -63,8 +66,8 @@ class Vehicle:
         self.destination = location
         self.rides = []
 
-    def add_ride(ride):
-        self.rides.append(ride)
+    def add_ride(self, ride):
+        self.rides.append(str(ride))
 
 
 def build_simulation(fn):
@@ -85,7 +88,7 @@ def build_simulation(fn):
 def main():
     sim = build_simulation(sys.argv[1])
     sim.sortRides()
-
+    sim.run()
 
 if __name__ == "__main__":
     main()
