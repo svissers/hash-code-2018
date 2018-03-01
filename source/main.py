@@ -45,12 +45,7 @@ class Simulation:
                 else:
                     pass # don't move, you're at your destination still and you didn't get a new ride.
 
-        f = open("output.out", "w")
-        for vehicle in self.vehicles:
-            f.write(str(len(vehicle.rides))+" ")
-            f.write(" ".join(vehicle.rides))
-            f.write("\n")
-        f.close()
+        
 
 class Ride:
     def __init__(self, id,start_loc, end_loc, start_earliest, finish_latest):
@@ -86,9 +81,18 @@ def build_simulation(fn):
 
 
 def main():
-    sim = build_simulation(sys.argv[1])
-    sim.sortRides()
-    sim.run()
+    for inp_fn in sys.argv[1:]:
+        print "running \"" + inp_fn + "\"..."
+        sim = build_simulation(inp_fn)
+        sim.sortRides()
+        sim.run()
+
+        f = open(inp_fn + ".out", "w")
+        for vehicle in sim.vehicles:
+            f.write(str(len(vehicle.rides))+" ")
+            f.write(" ".join(vehicle.rides))
+            f.write("\n")
+        f.close()
 
 if __name__ == "__main__":
     main()
