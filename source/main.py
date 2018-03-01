@@ -23,6 +23,7 @@ class Simulation:
 
     def run(self):
         for current_time in range(self.steps):
+            #free_vehicles = [vehicle for vehicle in self.vehicles if get_ride.manhattan(vehicle.location, vehicle.destination) == 0]
             for vehicle in self.vehicles:
                 if vehicle.location == vehicle.destination:
                     # get new ride for vehicle
@@ -30,18 +31,18 @@ class Simulation:
                         pass
                     else:
                         ride = get_ride.get_ride(vehicle, self.rides, current_time)
-                        vehicle.add_ride(ride.id)
+                        vehicle.add_ride(ride)
                         self.rides.remove(ride)
 
                 # update state
                 if vehicle.location[0] < vehicle.destination[0]:
-                    vehicle.location[0] += 1
+                    vehicle.location = (vehicle.location[0] + 1, vehicle.location[1]) 
                 elif vehicle.location[0] > vehicle.destination[0]:
-                    vehicle.location[0] -= 1
+                    vehicle.location = (vehicle.location[0] - 1, vehicle.location[1]) 
                 elif vehicle.location[1] < vehicle.destination[1]:
-                    vehicle.location[1] += 1
+                    vehicle.location = (vehicle.location[0], vehicle.location[1] + 1) 
                 elif vehicle.location[1] > vehicle.destination[1]:
-                    vehicle.location[1] -= 1
+                    vehicle.location = (vehicle.location[0], vehicle.location[1] - 1) 
                 else:
                     pass # don't move, you're at your destination still and you didn't get a new ride.
 
@@ -62,7 +63,8 @@ class Vehicle:
         self.rides = []
 
     def add_ride(self, ride):
-        self.rides.append(str(ride))
+        self.rides.append(str(ride.id))
+        self.destination = ride.end_loc
 
 
 def build_simulation(fn):
