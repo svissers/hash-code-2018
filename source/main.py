@@ -1,4 +1,5 @@
 import sys
+import get_ride
 
 class Simulation:
     def __init__(self, rows, cols, num_vehicles, num_rides, bonus, steps):
@@ -25,8 +26,9 @@ class Simulation:
         for vehicle in self.vehicles:
             if vehicle.location == vehicle.destination:
                 # get new ride for vehicle
-                pass
-            
+                ride = get_ride.get_ride(vehicle, self.rides, self.current_time)
+                self.rides.remove(ride)
+
             # update state
             if vehicle.location[0] < vehicle.destination[0]:
                 vehicle.location[0] += 1
@@ -38,7 +40,7 @@ class Simulation:
                 vehicle.location[1] -= 1
             else:
                 pass # don't move, you're at your destination still and you didn't get a new ride.
-            
+
 
 class Ride:
     def __init__(self, start_loc, end_loc, start_earliest, finish_latest):
@@ -56,7 +58,7 @@ class Vehicle:
 
 def build_simulation(fn):
     f = open(fn, "r")
-    
+
     lines = f.read().splitlines()
 
     simdata = lines[0].split(" ")
