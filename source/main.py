@@ -40,7 +40,7 @@ class Simulation:
                     vehicle.location[1] -= 1
                 else:
                     pass # don't move, you're at your destination still and you didn't get a new ride.
-                    
+
 
 class Ride:
     def __init__(self, start_loc, end_loc, start_earliest, finish_latest):
