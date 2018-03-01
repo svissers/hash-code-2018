@@ -7,16 +7,23 @@ def get_ride(vehicle, ride_list, current_time):
     if ride_list == []:
         return None
     distances = {}
-
+    rides_on_time = {}
+    rides_on_time_distance_to_travel = {}
+    rides_on_time_euclid = {}
     for ride in ride_list:
         distance_to_start = manhattan(vehicle.location, ride.start_loc)
         distances[ride] = distance_to_start
-        if current_time + distance_to_start == ride.start_earliest:
-            return ride
+        if current_time + distance_to_start <= ride.start_earliest:
+            rides_on_time[ride] = distance_to_start
+            # rides_on_time_distance_to_travel[ride] = manhattan(ride.start_loc, ride.end_loc)
+            # rides_on_time_euclid[ride] = (manhattan(ride.start_loc, ride.end_loc)**2 + distance_to_start**2)**0.5
             # return min(distances, key=distances.get)
     # print ride_list
     # print distances
+    if rides_on_time != {}:
+        return min(rides_on_time, key=rides_on_time.get)
     return min(distances, key=distances.get)
+    # return min(distances, key=distances.get)
 
 
 def get_vehicle(ride, vehicle_list, current_time):
@@ -28,7 +35,7 @@ def get_vehicle(ride, vehicle_list, current_time):
         distance = manhattan(vehicle.location, ride.start_loc)
         distances[vehicle] = distance
 
-        #check if the vehicle can arrive on time, if so, prefer this one, bonus points
+        #check if the vehicle can arrive on time, if so, prefer this one, for bonus points
         if current_time + distance <= ride.start_earliest:
             pass
 
