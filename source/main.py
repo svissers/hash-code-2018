@@ -16,6 +16,30 @@ class Simulation:
     def addRide(self, ride):
         self.rides.append(ride)
 
+
+    def sortRides(self):
+        self.rides = sorted(self.rides, key=lambda r: r.start_earliest)
+
+
+    def run(self):
+        for vehicle in self.vehicles:
+            if vehicle.location == vehicle.destination:
+                # get new ride for vehicle
+                pass
+            
+            # update state
+            if vehicle.location[0] < vehicle.destination[0]:
+                vehicle.location[0] += 1
+            elif vehicle.location[0] > vehicle.destination[0]:
+                vehicle.location[0] -= 1
+            elif vehicle.location[1] < vehicle.destination[1]:
+                vehicle.location[1] += 1
+            elif vehicle.location[1] > vehicle.destination[1]:
+                vehicle.location[1] -= 1
+            else:
+                pass # don't move, you're at your destination still and you didn't get a new ride.
+            
+
 class Ride:
     def __init__(self, start_loc, end_loc, start_earliest, finish_latest):
         self.start_loc = start_loc
@@ -27,7 +51,7 @@ class Ride:
 class Vehicle:
     def __init__(self, location = (0, 0)):
         self.location = location
-        self.destination = (0, 0)
+        self.destination = location
 
 
 def build_simulation(fn):
