@@ -13,7 +13,6 @@ class Simulation:
         self.vehicles = [Vehicle() for i in range(num_vehicles)]
         self.rides = []
 
-
     def addRide(self, ride):
         self.rides.append(ride)
 
@@ -23,25 +22,31 @@ class Simulation:
 
 
     def run(self):
+        for current_time in self.steps:
+            for vehicle in self.vehicles:
+                if vehicle.location == vehicle.destination:
+                    # get new ride for vehicle
+                    ride = get_ride.get_ride(vehicle, self.rides, self.current_time)
+                    vehicle.add_ride(ride.id)
+                    self.rides.remove(ride)
+
+                # update state
+                if vehicle.location[0] < vehicle.destination[0]:
+                    vehicle.location[0] += 1
+                elif vehicle.location[0] > vehicle.destination[0]:
+                    vehicle.location[0] -= 1
+                elif vehicle.location[1] < vehicle.destination[1]:
+                    vehicle.location[1] += 1
+                elif vehicle.location[1] > vehicle.destination[1]:
+                    vehicle.location[1] -= 1
+                else:
+                    pass # don't move, you're at your destination still and you didn't get a new ride.
+        f = open("output.out", "w")
         for vehicle in self.vehicles:
-            if vehicle.location == vehicle.destination:
-                # get new ride for vehicle
-                ride = get_ride.get_ride(vehicle, self.rides, self.current_time)
-                vehicle.add_ride(ride)
-                self.rides.remove(ride)
-
-            # update state
-            if vehicle.location[0] < vehicle.destination[0]:
-                vehicle.location[0] += 1
-            elif vehicle.location[0] > vehicle.destination[0]:
-                vehicle.location[0] -= 1
-            elif vehicle.location[1] < vehicle.destination[1]:
-                vehicle.location[1] += 1
-            elif vehicle.location[1] > vehicle.destination[1]:
-                vehicle.location[1] -= 1
-            else:
-                pass # don't move, you're at your destination still and you didn't get a new ride.
-
+            f.write(str(len(vehicle.rides))+" ")
+            f.write(" ".join(vehicle.rides))
+            f.write("\n")
+        f.close()
 
 class Ride:
     def __init__(self, start_loc, end_loc, start_earliest, finish_latest):
@@ -49,7 +54,6 @@ class Ride:
         self.end_loc = end_loc
         self.start_earliest = start_earliest
         self.finish_latest = finish_latest
-
 
 class Vehicle:
     def __init__(self, location = (0, 0)):
